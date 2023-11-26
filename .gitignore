@@ -5,3 +5,4 @@
 */.mvn
 */mvnw
 */mvnw.cmd
+/out/production/springboot/application.properties
