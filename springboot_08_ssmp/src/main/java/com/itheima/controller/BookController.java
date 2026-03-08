@@ -5,6 +5,7 @@ import com.itheima.controller.utils.R;
 import com.itheima.domain.Book;
 import com.itheima.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -44,10 +45,10 @@ public class BookController {
         return new R(bookService.delete(id));
     }
 
-    @GetMapping("{id}")
-    public R getById(@PathVariable Integer id){
-        return new R(true, bookService.getById(id));
-    }
+//    @GetMapping("{id}")
+//    public R getById(@PathVariable Integer id){
+//        return new R(true, bookService.getById(id));
+//    }
 
 //    @GetMapping("{currentPage}/{pageSize}")
 //    public R getPage(@PathVariable int currentPage,@PathVariable int pageSize){
@@ -59,7 +60,7 @@ public class BookController {
 //        return new R(true, page);
 //    }
 
-    @GetMapping("{currentPage}/{pageSize}")
+   /* @GetMapping("{currentPage}/{pageSize}")
     public R getPage(@PathVariable int currentPage,@PathVariable int pageSize,Book book){
 //        System.out.println("参数==>"+book);
 
@@ -69,6 +70,25 @@ public class BookController {
             page = bookService.getPage((int)page.getPages(), pageSize,book);
         }
         return new R(true, page);
+    }*/
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Book> getById(@PathVariable Integer id) {
+        Book book = bookService.getById(id);
+        return book != null ? ResponseEntity.ok(book)
+                : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/page/{currentPage}/{pageSize}")
+    public ResponseEntity<IPage<Book>> getPage(@PathVariable int currentPage,
+                                               @PathVariable int pageSize,
+                                               Book book) {
+        IPage<Book> page = bookService.getPage(currentPage, pageSize, book);
+        // 如果当前页码超出总页数，自动修正并重新查询（也可在服务层处理）
+        if (currentPage > page.getPages()) {
+            page = bookService.getPage((int) page.getPages(), pageSize, book);
+        }
+        return ResponseEntity.ok(page);
     }
 
 }
