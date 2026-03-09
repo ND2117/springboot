@@ -11,10 +11,15 @@ public class QuartzConfig {
     @Bean
     public JobDetail printJobDetail(){
         //绑定具体的工作
-        return JobBuilder
+        /*return JobBuilder
+                .newJob(MyQuartz.class)
+                .storeDurably()
+                .build();*/
+        JobDetail build = JobBuilder
                 .newJob(MyQuartz.class)
                 .storeDurably()
                 .build();
+        return build;
     }
 
     @Bean
