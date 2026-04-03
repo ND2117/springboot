@@ -60,9 +60,9 @@ public class BookController {
 //        return new R(true, page);
 //    }
 
-   /* @GetMapping("{currentPage}/{pageSize}")
-    public R getPage(@PathVariable int currentPage,@PathVariable int pageSize,Book book){
-//        System.out.println("参数==>"+book);
+    @GetMapping("{currentPage}/{pageSize}")
+    public R getPageV2(@PathVariable int currentPage,@PathVariable int pageSize,Book book){
+        System.out.println("参数==>"+book);
 
         IPage<Book> page = bookService.getPage(currentPage, pageSize,book);
         //如果当前页码值大于了总页码值，那么重新执行查询操作，使用最大页码值作为当前页码值
@@ -70,7 +70,7 @@ public class BookController {
             page = bookService.getPage((int)page.getPages(), pageSize,book);
         }
         return new R(true, page);
-    }*/
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Book> getById(@PathVariable Integer id) {
